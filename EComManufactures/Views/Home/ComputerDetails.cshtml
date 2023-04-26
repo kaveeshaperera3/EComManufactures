@@ -1,0 +1,32 @@
+﻿@model ComputerDisplayModel
+@{
+    ViewData["Title"] = "ComputerDetails";
+}
+
+<h1>ComputerDetails</h1>
+
+<div class=" w=100 mt-4 d-flex flex-wrap">
+   
+</div>
+@section Scripts{
+    <script>
+        async function add(ComputerId){
+            var usernameEl = document.getElementById("username");
+            if (usernameEl == null) {
+                window.location.href = "/Identity/Account/Login";
+            }
+            try{            
+                var response = await fetch('/Cart/AddItem?ComputerId=${ComputerId}');
+                if(response.status==200){
+                    var result = await response.json();                    
+                    var cartCountEl = document.getElementById("cartCount");
+                    cartCountEl.innerHTML = result;
+                    window.location.href= "#cartCount"
+                }                
+            }
+            catch(err){
+                console.log(err);
+            }
+        }
+    </script>
+}
