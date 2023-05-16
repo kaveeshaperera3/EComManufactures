@@ -7,6 +7,7 @@
         
         public string STerm { get; set; } = "";
         public int CatagoryID { get; set; } = 0;
+        public string ComputerSeries { get; set; } = "";
     }
 }
 

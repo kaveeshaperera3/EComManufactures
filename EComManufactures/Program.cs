@@ -19,13 +19,14 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddTransient<IHomeRepository, HomeRepository>();
 builder.Services.AddTransient<IUserOrderRepository, UserOrderReposiory>();
-builder.Services.AddTransient<ICartReposotory, CartReposotory>();
+builder.Services.AddTransient<ICartRepository, CartRepository>();
+builder.Services.AddTransient<IComputersRepository, ComputersRepository>();
 
 var app = builder.Build();
-/*using(var scope = app.Services.CreateScope())
+using(var scope = app.Services.CreateScope())
 {
     await DbSeeder.SeedDefaultData(scope.ServiceProvider);
-}*/
+}
 
 
 // Configure the HTTP request pipeline.

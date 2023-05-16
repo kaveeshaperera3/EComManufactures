@@ -1,19 +1,20 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
+using System;
+using System.Threading.Tasks;
 
 namespace EComManufactures.Controllers
 {
     [Authorize]
     public class CartController : Controller
     {
-        private readonly ICartReposotory _cartRepo;
+        private readonly ICartRepository _cartRepo;
 
-        public CartController(ICartReposotory cartRepo)
+        public CartController(ICartRepository cartRepo)
         {
             _cartRepo = cartRepo;
         }
-        public async Task<IActionResult> AddItem(int ComputerId, int Quantity=1,int redirect=0)        
+        public async Task<IActionResult> AddItem(int ComputerId, int Quantity = 1, int redirect = 0)
         {
             var cartCount = await _cartRepo.AddItem(ComputerId, Quantity);
             if (redirect == 0)
@@ -26,7 +27,6 @@ namespace EComManufactures.Controllers
             var cartCount = await _cartRepo.RemoveItem(ComputerId);
             return RedirectToAction("GetUserCart");
         }
-
         public async Task<IActionResult> GetUserCart()
         {
             var cart = await _cartRepo.GetUserCart();
@@ -38,6 +38,7 @@ namespace EComManufactures.Controllers
             int cartItem = await _cartRepo.GetCartItemCount();
             return Ok(cartItem);
         }
+
         public async Task<IActionResult> Checkout()
         {
             bool isCheckedOut = await _cartRepo.DoCheckout();
@@ -45,5 +46,6 @@ namespace EComManufactures.Controllers
                 throw new Exception("Something happen in server side");
             return RedirectToAction("Index", "Home");
         }
+
     }
 }

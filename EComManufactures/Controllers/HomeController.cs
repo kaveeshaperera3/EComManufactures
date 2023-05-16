@@ -1,9 +1,9 @@
 ﻿using EComManufactures.Models;
 using EComManufactures.Models.DTOs;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.Extensions.Logging;
 using System.Diagnostics;
-using System.IO;
+using System.Threading.Tasks;
 
 namespace EComManufactures.Controllers
 {
@@ -11,23 +11,27 @@ namespace EComManufactures.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IHomeRepository _homeRepository;
+
         public HomeController(ILogger<HomeController> logger, IHomeRepository homeRepository)
         {
             _logger = logger;
             _homeRepository = homeRepository;
         }
 
-        public async Task <IActionResult> Index(string sTerm="", int CatagoryID=0)
-        {            
-            IEnumerable<Computer> computer = await _homeRepository.GetComputers(sTerm, CatagoryID);
+        public async Task<IActionResult> Index(string sTerm = "", int catagoryID = 0, string computerSeries = "")
+        {
+            IEnumerable<Computer> computers = await _homeRepository.GetComputers(sTerm, catagoryID, computerSeries);
             IEnumerable<Catagory> catagories = await _homeRepository.Catagories();
+
             ComputerDisplayModel computerModel = new ComputerDisplayModel
             {
-                Computers = computer,
+                Computers = computers,
                 Catagories = catagories,
                 STerm = sTerm,
-                CatagoryID = CatagoryID
+                CatagoryID = catagoryID,
+                ComputerSeries = computerSeries
             };
+
             return View(computerModel);
         }
 
@@ -35,15 +39,11 @@ namespace EComManufactures.Controllers
         {
             return View();
         }
-        public IActionResult ComputerDetails()
+
+        public IActionResult ComputerDetails(int id)
         {
-            //IEnumerable<Computer> computer = await _homeRepository.GetComputers(comTitle);            
-            //ComputerDisplayModel computerModel = new ComputerDisplayModel
-            //{                      
-            //    Computers = Computer,
-            //    comTitle = comTitle
-            //};
-            return View();        
+            // Logic for computer details action
+            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

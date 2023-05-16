@@ -12,7 +12,7 @@ namespace EComManufactures.Controllers
         {
             _userOrderRepository = userOrderRepository;
         }
-        public async Task<IActionResult> UserOrder()
+        public async Task<IActionResult> UserOrders()
         {
             var orders = await _userOrderRepository.UserOrders();
             return View(orders);

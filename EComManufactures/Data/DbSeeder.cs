@@ -1,6 +1,6 @@
 ﻿using EComManufactures.Constants;
 using Microsoft.AspNetCore.Identity;
-
+using System;
 namespace EComManufactures.Data
 {
     public class DbSeeder
@@ -8,13 +8,13 @@ namespace EComManufactures.Data
         public static async Task SeedDefaultData(IServiceProvider service)
         {
             var userMgr = service.GetService<UserManager<IdentityUser>>();
-            var roleMgr = service.GetService<UserManager<IdentityRole>>();
-
-            //add some role to db
+            var roleMgr = service.GetService<RoleManager<IdentityRole>>();
+            //adding some roles to db
             await roleMgr.CreateAsync(new IdentityRole(Roles.Admin.ToString()));
             await roleMgr.CreateAsync(new IdentityRole(Roles.User.ToString()));
 
-            //create admin user
+            // create admin user
+
             var admin = new IdentityUser
             {
                 UserName = "admin@gmail.com",
@@ -28,6 +28,9 @@ namespace EComManufactures.Data
                 await userMgr.CreateAsync(admin, "Admin@123");
                 await userMgr.AddToRoleAsync(admin, Roles.Admin.ToString());
             }
+
+
+
         }
     }
 }
